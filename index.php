@@ -24,7 +24,7 @@ class Product {
 
     public function calcDiscount(int $discount){
         if($this->on_sale == true) {
-           return $this->newPrice = $this->price * ($discount / 100);
+           return $this->newPrice = $this->price - ($this->price * ($discount / 100));
         }
         else {
             return $this->newPrice = 'this product has no discount';
@@ -38,16 +38,82 @@ class Product {
         echo 'new Price: ' . $this->newPrice . '<br> ';
     }
 
+    public function getNewPrice() {
+        return $this->newPrice;
+    }
+
 }
 
 
 $articolo_1 = new Product('cavatappi', 'home', 10.30, true, false);
-var_dump($articolo_1);
-
 $articolo_1->calcDiscount(20);
 
+/* 
+ /product
+*/
+class User {
+    public $name;
+    public $lastName;
+    public $age;
+    public $mail;
+    public $password;
+    public $creditCard;
+
+ 
+    public function __construct(string $name, string $lastName, int $age, string $mail, string $password)
+    {
+        $this->name = $name;
+        $this->lastName = $lastName;
+        $this->age = $age;
+        $this->mail = $mail;
+        $this->password = $password;
+    }
+
+    public function insertCreditCard($creditCard) {
+        $this->creditCard = $creditCard;
+    }
+}
 
 
+
+class CreditCard {
+    public $number;
+    public $ccv;
+    public $import;
+
+      
+    public function __construct(string $number, string $ccv, float $import)
+    {
+        $this->number = $number;
+        $this->ccv = $ccv;
+        $this->import = $import;
+    }
+
+}
+
+class PremiumUser extends User {
+    public $specialDiscount;
+    public $specialPrice;
+
+    public function __construct($name, $lastName, $age, $mail, $password)
+    {
+        parent::__construct($name, $lastName, $age, $mail, $password);
+    }
+
+    public function calcPremiumPrice(int $productPrice) {
+            $this->specialDiscount = 50;
+            $this->specialPrice = $productPrice - ($productPrice * ($this->specialDiscount / 100));
+        
+    }
+}
+
+$user = new PremiumUser('Jim', 'Alpert', 27, 'jim@al.it', 'ciaociao123');
+$userCard = new CreditCard('CCGGG433G3223', '082', 11200.50);
+
+$user->insertCreditCard($userCard);
+$user->calcPremiumPrice($articolo_1->price);
+
+var_dump($user)
 
 
 
